@@ -4,15 +4,14 @@ import style from "./Menu.module.css";
 
 function CustomLink (props) {
     const path = useResolvedPath(props.to);
-    console.log('path', path);
     const match = useMatch(path.pathname);
-    console.log('match', match);
 
     return (
-        <Link to={props.to} className={`nav-link ${match ? style.active : ""}`}>{props.name}</Link>
+        <li className={`active ${match ? style.active : ""}`}>
+            <Link to={props.to}>{props.name}</Link>
+        </li>
     );
 }
-
 const menu = [
     {
         to: "/",
@@ -36,8 +35,10 @@ function showMenuList(menu) {
 
 function Menu (props) {
     return (
-    <nav className="nav justify-content-center|justify-content-end">
-        {showMenuList(menu)}
+    <nav className="navbar" role="navigation">
+        <ul className="nav navbar-nav">
+            {showMenuList(menu)}
+        </ul>
     </nav>
     );
 }
