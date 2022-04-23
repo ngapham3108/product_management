@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import NotFoundPage from "./Pages/NotFoundPage/NotFoundPage";
 import Home from "./Pages/Home/Home";
 import ProductPage from "./Pages/ProductPage/ProductPage";
+import ActionPage from "./Pages/ActionPage/ActionPage";
 
 const default_routes = [
     {
@@ -12,6 +13,10 @@ const default_routes = [
     {
         path: "/management",
         element: <ProductPage/>
+    },
+    {
+        path: "/management/add",
+        element: <ActionPage/>
     },
     {
         path: "*",
