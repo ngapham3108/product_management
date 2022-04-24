@@ -19,6 +19,10 @@ const default_routes = [
         element: <ActionPage/>
     },
     {
+        path: "/management/edit/:id",
+        element: <ActionPage/>
+    },
+    {
         path: "*",
         element: <NotFoundPage/>
     }

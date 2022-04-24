@@ -19,6 +19,7 @@ function showProducts(product_list) {
                 price={item.price}
                 status={item.status}
                 code={item.code}
+                __id = {item.id}
             />
         });
     }

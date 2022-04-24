@@ -1,15 +1,22 @@
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useMatch } from "react-router-dom";
+
 import {API_URL} from "./../../constants/config"
 
-function submit(navigate) {
+function submit(navigate, match) {
     let payload = {
         code: document.getElementById('code').value,
         name: document.getElementById('name').value,
         price: document.getElementById('price').value,
         status: document.getElementById('status').checked,
     }
-    fetch(`${API_URL}/product`, {
-        method: "POST",
+    let id;
+    if (match) {
+        id = match.params.id;
+    }
+    fetch(`${API_URL}/product/${id ? id : ""}`, {
+        method: id ? "PUT" : "POST",
         headers: {
             "Content-Type": "application/json"
         },
@@ -17,7 +24,7 @@ function submit(navigate) {
     }).then(res => {
         if (res.ok) {
             navigate(-1);
-            alert("Successfully submitted")
+            alert("Successfully saved")
         } else {
             throw new Error("Failed To Save");
         }
@@ -26,6 +33,31 @@ function submit(navigate) {
 
 function ActionPage() {
     const navigate = useNavigate();
+    const match = useMatch("/management/edit/:id");
+    useEffect(()=>{
+        let id;
+        if (!match) {
+            return;
+        }
+        id = match.params.id;
+
+        fetch(`${API_URL}/product/${id}`)
+        .then(res => {
+            if (res.ok) {
+                return res.json();
+            } else {
+                alert("Failed to load resouce");
+            }
+        }).then (payload => {
+            document.getElementById('code').value = payload.code;
+            document.getElementById('name').value = payload.name;
+            document.getElementById('price').value = payload.price;
+            document.getElementById('status').value = payload.status;
+        }). catch(err => {throw err});
+
+    }, []);
+
+
     return (
         <>
         <form role="form">
@@ -42,10 +74,9 @@ function ActionPage() {
                 <input style={{marginLeft: '10px'}} type="checkbox" id="status"/>
             </div>
         </form>
-        <button onClick={() => submit(navigate)} className="btn btn-primary">Submit</button>
+        <button onClick={() => submit(navigate, match)} className="btn btn-primary">Save</button>
         </>
     );
 }
 
 export default ActionPage;
-
